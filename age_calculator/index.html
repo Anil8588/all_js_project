@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>Age Calculator</h2>
+        </header>
+        <form>
+            <div class="date">
+                <div>
+                    <label for="date">Date</label><br>
+                    <input type="number" id="date" placeholder="Date" min="1" max="31" required>
+                </div>
+                <div>
+                    <label for="month">Month</label><br>
+                    <input type="number" id="month" placeholder="Month" min="1" max="12" required>
+                </div>
+                <div>
+                    <label for="year">Year</label><br>
+                    <input type="number" id="year" placeholder="Year" min="1900" max="2100" required>
+                </div>
+            </div>
+            <br><br>
+            <button type="button" onclick="age()">Submit</button>
+            <p id="MyAge"></p>
+        </form>
+    </div>
+    <script>
+        function age() {
+            let birth_date = parseInt(document.getElementById('date').value);
+            let birth_month = parseInt(document.getElementById('month').value);
+            let birth_year = parseInt(document.getElementById('year').value);
+
+            let date = new Date();
+            let current_date = date.getDate();
+            let current_month = date.getMonth() + 1;
+            let current_year = date.getFullYear();
+
+            // Leap year handling
+            function isLeapYear(year) {
+                return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            }
+
+            const daysInMonth = [
+                31, 28 + isLeapYear(current_year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+            ];
+
+            if (birth_date > current_date) {
+                current_month -= 1;
+                current_date += daysInMonth[birth_month - 1];
+            }
+            if (birth_month > current_month) {
+                current_year -= 1;
+                current_month += 12;
+            }
+
+            let final_date = current_date - birth_date;
+            let final_month = current_month - birth_month;
+            let final_year = current_year - birth_year;
+
+            let finalResult = `Your age is ${final_year} years, ${final_month} months, and ${final_date} days.`;
+            document.getElementById('MyAge').innerHTML = finalResult;
+        }
+    </script>
+</body>
+
+</html>
